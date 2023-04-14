@@ -3,7 +3,7 @@
   <div class="medium-12 columns">
     <div class="section">
       <div class="section__body no-padding">
-        <div data-fragment-id="onlineuser">
+        <div data-fragment-id="status>
           <table class="data-table">
             <colgroup>
               <col class="col--uid">
@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              {%- for doc in onlineusers -%}
+              {%- for doc in onlineuser -%}
               <tr>
                 <td class="col--uid">{{ doc.uid }}</td>
                 <td class="col--uname">{{ doc.uname }}</td>
