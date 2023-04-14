@@ -33,8 +33,8 @@ async function getUserTokens(): Promise<UserToken[]> {
 
 class OnlineUserHandler extends Handler {
     async get() {
-        const Tokens = await getUserTokens();
-        this.response.body = { Tokens.uid, Tokens.uname };
+        const onlineusers = await getUserTokens();
+        this.response.body = { onlineusers };
         this.response.template = 'online_user.html';
     }
 }
