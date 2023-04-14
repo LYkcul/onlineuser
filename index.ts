@@ -33,12 +33,12 @@ async function getUserTokens(): Promise<UserToken[]> {
 
 class OnlineUserHandler extends Handler {
     async get() {
-        const onlineuser = await getUserTokens();
-        this.response.body = { onlineuser };
+        const onlineusers= await getUserTokens();
+        this.response.body = { onlineusers };
         this.response.template = 'online_user.html';
     }
 }
 
 export async function apply(ctx: Context) {
-    ctx.Route('onlineuser', '/onlineuser', OnlineUserHandler);
+    ctx.Route('onlineusers', '/onlineuser', OnlineUserHandler);
 }
