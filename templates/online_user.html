@@ -1,0 +1,32 @@
+{% block content %}
+<div class="row">
+  <div class="medium-12 columns">
+    <div class="section">
+      <div class="section__body no-padding">
+        <div data-fragment-id="onlineuser">
+          <table class="data-table">
+            <colgroup>
+              <col class="col--uid">
+              <col class="col--uname">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="col--uid">{{ _('ID') }}</th>
+                <th class="col--uname">{{ _('用户名') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for doc in online_user -%}
+              <tr>
+                <td class="col--uid">{{ doc.uid }}</td>
+                <td class="col--uname">{{ doc.uname }}</td>
+              </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
