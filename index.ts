@@ -34,10 +34,10 @@ async function getUserTokens(): Promise<UserToken[]> {
     { $match: { updateAt: { $gte: new Date(Date.now() - 300 * 1000) }, uid: { $gt: 1 } } },
     { $group: { _id: '$uid' } },
     { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
-    { $project: { _id: '$_id', uname: '$user.uname', avatar: '$user.avatar' } },
+    { $project: { _id: '$_id', uname: '$user.uname', avatarUrl: '$user.avatar' } },
     { $unwind: '$uname' },
   ]).toArray();
-  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatar: item.avatarUrl }));
+  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatarUrl: item.avatarUrl }));
   return res;
 }
 
