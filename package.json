@@ -1,6 +1,6 @@
 {
   "name": "hydrooj-onlineuser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "显示当前在线用户",
   "main": "index.ts",
   "author": "LYkcul",

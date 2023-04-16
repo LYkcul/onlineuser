@@ -5,6 +5,9 @@
     <div class="section">
       <div class="section__body no-padding">
         <div data-fragment-id="status">
+          {% if not udocs.length %}
+          {{ nothing.render('对不起，暂无在线用户。') }}
+          {% else %}
           <table class="data-table">
             <colgroup>
               <col class="col--uid">
@@ -20,7 +23,7 @@
               {%- for doc in onlineusers -%}
               <tr>
                 <td class="col--uid">{{ doc.uid }}</td>
-                <td class="col--uname">{{ doc.uname }}</td>
+                <td class="col--uname">{{ user.render_inline(doc) }}</td>
               </tr>
               {%- endfor -%}
             </tbody>

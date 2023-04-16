@@ -35,7 +35,7 @@ class OnlineUserHandler extends Handler {
     async get() {
         const onlineusers= await getUserTokens();
         this.response.body = { onlineusers };
-        this.response.template = 'online_user.html';
+        this.response.template = 'onlineuser.html';
     }
 }
 
