@@ -18,7 +18,7 @@ interface User {
 interface UserToken {
   uid: number;
   uname: string;
-  avatar: URL;
+  avatarUrl: string;
 }
 
 async function getUserTokens(): Promise<UserToken[]> {
@@ -37,7 +37,7 @@ async function getUserTokens(): Promise<UserToken[]> {
     { $project: { _id: '$_id', uname: '$user.uname', avatar: '$user.avatar' } },
     { $unwind: '$uname' },
   ]).toArray();
-  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatar: item.avatar }));
+  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatar: item.avatarUrl }));
   return res;
 }
 
