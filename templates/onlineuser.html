@@ -38,8 +38,7 @@
               {%- for doc in onlineusers -%}
               <tr>
                 <td class="col--uid">{{ doc.uid }}</td>
-                <td class="col--user"><img src="{{ doc.avatarUrl }}"> {{ doc.uname }}</td>
-                <!--<img class="small user-profile-avatar v-center" loading="lazy" src="" width="20" height="20">-->
+                <td class="col--user"><img class="small user-profile-avatar v-center" loading="lazy" src="{{ doc.avatarUrl }}" width="20" height="20"> {{ doc.uname }}</td>
               </tr>
               {%- endfor -%}
             </tbody>
