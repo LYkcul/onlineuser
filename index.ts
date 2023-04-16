@@ -1,4 +1,4 @@
-import { Handler, db, Context } from 'hydrooj';
+import { Handler, db, Context, avatar } from 'hydrooj';
 
 const token: Collection<Token> = db.collection('token');
 const user: Collection<Token> = db.collection('user');
@@ -12,7 +12,7 @@ interface Token {
 interface User {
   _id: string;
   uname: string;
-  avatar: string;
+  avatarUrl: string;
 }
 
 interface UserToken {
@@ -37,7 +37,7 @@ async function getUserTokens(): Promise<UserToken[]> {
     { $project: { _id: '$_id', uname: '$user.uname', avatarUrl: '$user.avatar' } },
     { $unwind: '$uname' },
   ]).toArray();
-  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatarUrl: item.avatarUrl }));
+  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatarUrl: avatar(item.avatarUrl) }));
   return res;
 }
 
