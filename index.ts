@@ -18,7 +18,7 @@ interface User {
 interface UserToken {
   uid: number;
   uname: string;
-  avatarUrl: string;
+  avatarUrl: any;
 }
 
 async function getUserTokens(): Promise<UserToken[]> {
