@@ -21,7 +21,7 @@ interface UserToken {
 
 async function getUserTokens(): Promise<UserToken[]> {
   const result = await token.aggregate<Token>([
-    { $match: { updateAt: { $gte: new Date(Date.now() - 1800 * 1000) }, uid: { $gt: 1 } } },
+    { $match: { updateAt: { $gte: new Date(Date.now() - 300 * 1000) }, uid: { $gt: 1 } } },
     { $group: { _id: '$uid' } },
     { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
     { $project: { _id: '$_id', uname: '$user.uname' } },
