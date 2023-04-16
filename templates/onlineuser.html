@@ -21,14 +21,10 @@
             </thead>
             <tbody>
               {%- for doc in onlineusers -%}
-              {%- for udoc in udocs -%}
-              {%- if udoc._id == doc.uid -%}
               <tr>
                 <td class="col--uid">{{ doc.uid }}</td>
-                <td class="col--user">{{ user.render_inline(udoc) }}</td>
+                <td class="col--user">{{ doc.uname }}</td>
               </tr>
-              {% endif %}
-              {%- endfor -%}
               {%- endfor -%}
             </tbody>
           </table>
