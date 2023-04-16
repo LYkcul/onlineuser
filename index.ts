@@ -12,22 +12,32 @@ interface Token {
 interface User {
   _id: string;
   uname: string;
+  avatar: string;
 }
 
 interface UserToken {
   uid: number;
   uname: string;
+  avatar: URL;
 }
 
 async function getUserTokens(): Promise<UserToken[]> {
+  // const result = await token.aggregate<Token>([
+  //   { $match: { updateAt: { $gte: new Date(Date.now() - 300 * 1000) }, uid: { $gt: 1 } } },
+  //   { $group: { _id: '$uid' } },
+  //   { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
+  //   { $project: { _id: '$_id', uname: '$user.uname' } },
+  //   { $unwind: '$uname' },
+  // ]).toArray();
+
   const result = await token.aggregate<Token>([
     { $match: { updateAt: { $gte: new Date(Date.now() - 300 * 1000) }, uid: { $gt: 1 } } },
     { $group: { _id: '$uid' } },
     { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
-    { $project: { _id: '$_id', uname: '$user.uname' } },
+    { $project: { _id: '$_id', uname: '$user.uname', avatar: '$user.avatar' } },
     { $unwind: '$uname' },
   ]).toArray();
-  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname }));
+  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatar: item.avatar }));
   return res;
 }
 

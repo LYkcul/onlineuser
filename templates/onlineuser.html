@@ -1,13 +1,28 @@
+{% set page_name = "onlineuser" %}
 {% extends "layout/basic.html" %}
 {% block content %}
 <div class="row">
   <div class="medium-12 columns">
     <div class="section">
-      <div class="section__body no-padding">
-        <div data-fragment-id="status">
-          {% if not onlineusers.length %}
+      <div class="section__body">
+        <div class="row">
+          <div class="medium-12 columns" style="text-align: center;">
+            <h2>
+              {{ _("在线用户") }}
+            </h2>
+          </div>
+        </div>
+        <div class="row" style="padding-left:20px;padding-right: 20px;padding-top: 40px;padding-bottom: 20px;user-select:none;">
+        {% if not onlineusers.length %}
           {{ nothing.render('对不起，暂无在线用户。') }}
-          {% else %}
+        {% else %}
+        <div class="row">
+          <div class="medium-12 columns" style="text-align: center;">
+            <h4>
+              当前共有 {{ onlineusers.length }} 个用户在线
+            </h4>
+          </div>
+        </div>
           <table class="data-table">
             <colgroup>
               <col class="col--uid">
@@ -23,12 +38,12 @@
               {%- for doc in onlineusers -%}
               <tr>
                 <td class="col--uid">{{ doc.uid }}</td>
-                <td class="col--user">{{ doc.uname }}</td>
+                <td class="col--user">{{ doc.avatar + doc.uname }}</td>
               </tr>
               {%- endfor -%}
             </tbody>
           </table>
-          {% endif %}
+        {% endif %}
         </div>
       </div>
     </div>
