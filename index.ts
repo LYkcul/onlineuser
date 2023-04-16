@@ -1,7 +1,7 @@
 import { Handler, db, Context, avatar } from 'hydrooj';
 
 const token: Collection<Token> = db.collection('token');
-const user: Collection<Token> = db.collection('user');
+const user: Collection<User> = db.collection('user');
 
 interface Token {
   _id: string;
@@ -12,13 +12,13 @@ interface Token {
 interface User {
   _id: string;
   uname: string;
-  avatarUrl: string;
+  avatar: string;
 }
 
 interface UserToken {
   uid: number;
   uname: string;
-  avatarUrl: any;
+  avatarUrl: string;
 }
 
 async function getUserTokens(): Promise<UserToken[]> {
@@ -34,10 +34,10 @@ async function getUserTokens(): Promise<UserToken[]> {
     { $match: { updateAt: { $gte: new Date(Date.now() - 300 * 1000) }, uid: { $gt: 1 } } },
     { $group: { _id: '$uid' } },
     { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
-    { $project: { _id: '$_id', uname: '$user.uname', avatarUrl: '$user.avatar' } },
+    { $project: { _id: '$_id', uname: '$user.uname', avatar: '$user.avatar' } },
     { $unwind: '$uname' },
   ]).toArray();
-  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatarUrl: avatar(item.avatarUrl) }));
+  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatarUrl: avatar(item.avatar) }));
   return res;
 }
 
