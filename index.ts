@@ -1,4 +1,5 @@
-import { Handler, db, Context, avatar } from 'hydrooj';
+import { definePlugin, Handler, db, Context } from 'hydrooj';
+import { avatar } from 'hydrooj';
 
 const token: Collection<Token> = db.collection('token');
 const user: Collection<User> = db.collection('user');
@@ -7,6 +8,8 @@ interface Token {
   _id: string;
   uid: number;
   updateAt: Date;
+  uname: string;
+  avatar: string;
 }
 
 interface User {
@@ -18,18 +21,12 @@ interface User {
 interface UserToken {
   uid: number;
   uname: string;
+  avatar: string;
   avatarUrl: string;
 }
 
-async function getUserTokens(): Promise<UserToken[]> {
-  // const result = await token.aggregate<Token>([
-  //   { $match: { updateAt: { $gte: new Date(Date.now() - 300 * 1000) }, uid: { $gt: 1 } } },
-  //   { $group: { _id: '$uid' } },
-  //   { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
-  //   { $project: { _id: '$_id', uname: '$user.uname' } },
-  //   { $unwind: '$uname' },
-  // ]).toArray();
 
+async function getUserTokens(): Promise<UserToken[]> {
   const result = await token.aggregate<Token>([
     { $match: { updateAt: { $gte: new Date(Date.now() - 600 * 1000) }, uid: { $gt: 1 } } },
     { $group: { _id: '$uid' } },
@@ -37,18 +34,28 @@ async function getUserTokens(): Promise<UserToken[]> {
     { $project: { _id: '$_id', uname: '$user.uname', avatar: '$user.avatar' } },
     { $unwind: '$uname' },
   ]).toArray();
-  const res: UserToken[] = result.map((item) => ({ uid: item._id, uname: item.uname, avatarUrl: avatar(item.avatar) }));
+    const res: UserToken[] = result.map((item) => ({
+    uid: item._id,
+    uname: item.uname,
+    avatar: item.avatar,
+    }));
+  for (const item of res) {
+      item.avatarUrl = avatar(item.avatar);
+  }
+    
   return res;
 }
 
 class OnlineUserHandler extends Handler {
     async get() {
-        const onlineusers= await getUserTokens();
+        const onlineusers = await getUserTokens();
         this.response.body = { onlineusers };
         this.response.template = 'onlineuser.html';
     }
 }
 
-export async function apply(ctx: Context) {
-    ctx.Route('onlineusers', '/onlineuser', OnlineUserHandler);
-}
+export default definePlugin({
+    apply(ctx) {    
+	ctx.Route('onlineusers', '/onlineuser', OnlineUserHandler);
+    }
+});
