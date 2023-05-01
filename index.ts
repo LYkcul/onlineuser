@@ -1,5 +1,5 @@
 import { definePlugin, Handler, db, Context } from 'hydrooj';
-import { avatar } from 'hydrooj';
+import avatar from './avatar';
 
 const token: Collection<Token> = db.collection('token');
 const user: Collection<User> = db.collection('user');
@@ -42,7 +42,6 @@ async function getUserTokens(): Promise<UserToken[]> {
   for (const item of res) {
       item.avatarUrl = avatar(item.avatar);
   }
-    
   return res;
 }
 
