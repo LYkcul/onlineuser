@@ -1,5 +1,4 @@
-import { definePlugin, Handler, db, Context } from 'hydrooj';
-import avatar from './avatar';
+import { definePlugin, Handler, db, Context, avatar } from 'hydrooj';
 
 const token: Collection<Token> = db.collection('token');
 const user: Collection<User> = db.collection('user');
@@ -28,7 +27,7 @@ interface UserToken {
 
 async function getUserTokens(): Promise<UserToken[]> {
   const result = await token.aggregate<Token>([
-    { $match: { updateAt: { $gte: new Date(Date.now() - 600 * 1000) }, uid: { $gt: 1 } } },
+    { $match: { updateAt: { $gte: new Date(Date.now() - 900 * 1000) }, uid: { $gt: 1 } } },
     { $group: { _id: '$uid' } },
     { $lookup: { from: 'user', localField: '_id', foreignField: '_id', as: 'user' } },
     { $project: { _id: '$_id', uname: '$user.uname', avatar: '$user.avatar' } },
@@ -38,10 +37,8 @@ async function getUserTokens(): Promise<UserToken[]> {
     uid: item._id,
     uname: item.uname,
     avatar: item.avatar,
+    avatarUrl: avatar(item.avatar, 20),
     }));
-  for (const item of res) {
-      item.avatarUrl = avatar(item.avatar);
-  }
   return res;
 }
 
@@ -55,6 +52,6 @@ class OnlineUserHandler extends Handler {
 
 export default definePlugin({
     apply(ctx) {    
-	ctx.Route('onlineusers', '/onlineuser', OnlineUserHandler);
+	  ctx.Route('onlineusers', '/onlineuser', OnlineUserHandler);
     }
 });

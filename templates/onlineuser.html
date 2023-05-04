@@ -39,8 +39,7 @@
               <tr>
                 <td class="col--uid">{{ doc.uid }}</td>
                <td class="col--user"><img class="small" loading="lazy" src="{{ doc.avatarUrl }}" width="20" height="20"> <a href="/user/{{ doc.uid }}">{{ doc.uname }}</a></td>
-               <!-- <td class="col--user">{{ user.render_inline(udict[doc.uid]) }}</td> -->
-		</tr>
+		        </tr>
               {%- endfor -%}
             </tbody>
           </table>
