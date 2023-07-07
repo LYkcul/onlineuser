@@ -1,52 +1,44 @@
-{% set page_name = "onlineuser" %}
+{% set page_name = "在线用户" %}
+{% import "components/user.html" as user with context %}
+{% import "components/nothing.html" as nothing with context %}
+{% import "components/paginator.html" as paginator with context %}
 {% extends "layout/basic.html" %}
 {% block content %}
 <div class="row">
   <div class="medium-12 columns">
     <div class="section">
-      <div class="section__body">
-        <div class="row">
-          <div class="medium-12 columns" style="text-align: center;">
-            <h2>
-              {{ _("在线用户") }}
-            </h2>
-          </div>
-        </div>
-        <div class="row" style="padding-left:20px;padding-right: 20px;padding-top: 40px;padding-bottom: 20px;user-select:none;">
         {% if not onlineusers.length %}
           {{ nothing.render('对不起，暂无在线用户。') }}
         {% else %}
-        <div class="row">
-          <div class="medium-12 columns" style="text-align: center;">
-            <h4>
-              当前共有 {{ onlineusers.length }} 个用户在线
-            </h4>
+          <div class="section__header">
+              <h1 class="section__title">共有 {{ onlineusers.length }} 位用户在线</h1>
           </div>
-        </div>
           <table class="data-table">
             <colgroup>
               <col class="col--uid">
               <col class="col--user">
+              <col class="col--bio">
             </colgroup>
             <thead>
               <tr>
-                <th class="col--uid">{{ _('ID') }}</th>
-                <th class="col--user">{{ _('用户名') }}</th>
+                <th class="col--uid">UID</th>
+                <th class="col--user">用户名</th>
+                <th class="col--bio">个人简介</th>
               </tr>
             </thead>
             <tbody>
               {%- for doc in onlineusers -%}
               <tr>
-                <td class="col--uid">{{ doc.uid }}</td>
+               <td class="col--uid">{{ doc.uid }}</td>
+               <!--<td class="col--user">{{ user.render_inline(doc.udoc, badge=false) }}</td>-->
                <td class="col--user"><img class="small" loading="lazy" src="{{ doc.avatarUrl }}" width="20" height="20"> <a href="/user/{{ doc.uid }}">{{ doc.uname }}</a></td>
-		        </tr>
+               <td class="col--bio">{{ doc.bio|default('')|truncate(64, true)|markdownInline|safe }}</td>
+		          </tr>
               {%- endfor -%}
             </tbody>
           </table>
         {% endif %}
-        </div>
       </div>
-    </div>
   </div>
 </div>
 {% endblock %}
